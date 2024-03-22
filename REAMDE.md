@@ -272,3 +272,49 @@ events {
 
 }
 ```
+
+
+## setup load balancer with robin
+
+```conf=
+http {
+  include mime.types;
+
+  upstream backendserver {
+    server server-1:7777;
+    server server-2:7777;
+    server server-3:7777;
+    server server-4:7777;
+  }
+  server {
+    listen 8080;
+    root /mysite;
+  
+    rewrite ^/number/(\w+) /count/$1;
+    location / {
+      proxy_pass http://backendserver;
+    }
+    location ~* /count/[0-9] {
+      root /mysite;
+      try_files /index.html =404;
+    }
+
+    location /fruits {
+      root /mysite;
+    }
+    location /carbs {
+      alias /mysite/fruits;
+    }
+    location /vegetables {
+      root /mysite;
+      try_files /vegetables/veggies.html /index.html =404;
+    }
+    location /crops {
+      return 307 /fruits;
+    }
+  }
+}
+events {
+
+}
+```
