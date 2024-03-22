@@ -12,6 +12,51 @@ services:
     restart: always
     networks:
       - learn-nginx
+    depends_on:
+      - server-1
+      - server-2
+      - server-3
+      - server-4
+  server-1:
+    image: server
+    container_name: server-1
+    # build:
+    #   context: .
+    #   dockerfile: ./server/Dockerfile
+    ports:
+      - 1111:7777
+    networks:
+      - learn-nginx
+  server-2:
+    image: server
+    container_name: server-2
+    # build:
+    #   context: .
+    #   dockerfile: ./server/Dockerfile
+    ports:
+      - 2222:7777
+    networks:
+      - learn-nginx
+  server-3:
+    image: server
+    container_name: server-3
+    # build:
+    #   context: .
+    #   dockerfile: ./server/Dockerfile
+    ports:
+      - 3333:7777
+    networks:
+      - learn-nginx
+  server-4:
+    image: server
+    container_name: server-4
+    # build:
+    #   context: .
+    #   dockerfile: ./server/Dockerfile
+    ports:
+      - 4444:7777
+    networks:
+      - learn-nginx
 networks:
   learn-nginx:
     driver: bridge
